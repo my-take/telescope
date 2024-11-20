@@ -144,6 +144,9 @@ svg.icon {
             width: 1%;
             white-space: nowrap;
         }
+        tr.duplicate-queries {
+    background-color: rgba($blue-500, 0.1);
+    }
     }
 }
 
