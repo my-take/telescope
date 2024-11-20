@@ -55,7 +55,7 @@ class QueryWatcher extends Watcher
      */
     protected function getQueryHash($event): string
     {
-        return rtrim(base64_encode(md5($this->connection->getDatabaseName().$event->sql.implode('', $this->formatBindings($event)), true)), '=');
+        return rtrim(base64_encode(md5($event->connectionName.$event->sql.implode('', $this->formatBindings($event)), true)), '=');
     }
 
     /**
