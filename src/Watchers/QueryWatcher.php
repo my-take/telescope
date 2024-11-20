@@ -44,9 +44,18 @@ class QueryWatcher extends Watcher
                 'slow' => isset($this->options['slow']) && $time >= $this->options['slow'],
                 'file' => $caller['file'],
                 'line' => $caller['line'],
-                'hash' => $this->familyHash($event),
+                'hash' => $this->getQueryHash($event),
             ])->tags($this->tags($event)));
         }
+    }
+
+     /**
+     * @param  \Illuminate\Database\Events\QueryExecuted  $event
+     * @return string
+     */
+    protected function getQueryHash($event): string
+    {
+        return rtrim(base64_encode(md5($this->connection->getDatabaseName().$event->sql.implode('', $this->formatBindings($event)), true)), '=');
     }
 
     /**
