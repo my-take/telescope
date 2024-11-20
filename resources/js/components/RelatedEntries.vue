@@ -74,6 +74,9 @@
                 if(window.history.replaceState) {
                     window.history.replaceState(null, null, '#' + this.currentTab);
                 }
+            },
+            hasDuplicated(hash){
+                return this.queriesSummary.duplicates.includes(hash)
             }
         },
 
@@ -144,6 +147,7 @@
             queriesSummary() {
                 return {
                     time: _.reduce(this.queries, (time, q) => { return time + parseFloat(q.content.time) }, 0.00).toFixed(2),
+                    duplicates: _.filter(_.map(_.groupBy(this.queries, (g) => { return g.content.hash }), (g) => { return g.length > 1 ? _.first(g).content.hash : null })),
                     duplicated: this.queries.length - _.size(_.groupBy(this.queries, (q) => { return `${q.content.hash}-${q.content.connection}` })),
                 };
             },
@@ -266,7 +270,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="entry in queries">
+                <tr v-for="entry in queries" :class="{ 'duplicate-queries': hasDuplicated(entry.content.hash) }">
                     <td :title="entry.content.sql"><code>{{truncate(entry.content.sql, 110)}}</code></td>
 
                     <td class="table-fit text-right">
