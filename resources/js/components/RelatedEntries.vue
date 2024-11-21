@@ -308,7 +308,10 @@
                 <tr v-for="entry in models">
                     <td :title="entry.content.model">{{truncate(entry.content.model, 100)}}</td>
                     <td class="table-fit">
-                        <span class="badge" :class="'badge-'+modelActionClass(entry.content.action)">
+                        <span class="badge" :class="'badge-secondary'">
+                            {{entry.content.count}}
+                        </span>
+                      <span class="badge" :class="'badge-'+modelActionClass(entry.content.action)">
                             {{entry.content.action}}
                         </span>
                     </td>
